@@ -42,10 +42,12 @@ jobs:
         
         # Add authentication to the existing .npmrc file in the frontend directory
         cd ${{ env.APP_LOCATION }}
-        echo "//carmax.jfrog.io/artifactory/api/npm/npm/:username=${{ vars.ARTIFACTORY_USERNAME }}" >> .npmrc
-        echo "//carmax.jfrog.io/artifactory/api/npm/npm/:_password=${{ secrets.ARTIFACTORY_PASSWORD }}" >> .npmrc
         
-        # Display the .npmrc content (passwords will be masked by GitHub)
+        # Create base64 encoded auth token (this is what npm often expects)
+        AUTH_TOKEN=$(echo -n "${{ vars.ARTIFACTORY_USERNAME }}:${{ secrets.ARTIFACTORY_PASSWORD }}" | base64 -w 0)
+        echo "//carmax.jfrog.io/artifactory/api/npm/npm/:_auth=${AUTH_TOKEN}" >> .npmrc
+        
+        # Display the .npmrc content (auth tokens will be masked by GitHub)
         echo "Contents of .npmrc:"
         cat .npmrc
         
