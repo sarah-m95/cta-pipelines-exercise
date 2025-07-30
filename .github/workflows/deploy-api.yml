@@ -29,14 +29,14 @@ jobs:
         
     - name: Configure NuGet with Artifactory
       run: |
-        dotnet nuget add source ${{ variables.ARTIFACTORY_NUGET_URL }} \
+        dotnet nuget add source ${{ vars.ARTIFACTORY_NUGET_URL }} \
           --name "Artifactory" \
-          --username ${{ variables.ARTIFACTORY_USERNAME }} \
+          --username ${{ vars.ARTIFACTORY_USERNAME }} \
           --password ${{ secrets.ARTIFACTORY_PASSWORD }} \
           --store-password-in-clear-text
         
     - name: Restore NuGet packages
-      run: dotnet restore ${{ env.SOLUTION_PATH }} --source "Artifactory" --source "${{ variables.ARTIFACTORY_NUGET_URL }}"
+      run: dotnet restore ${{ env.SOLUTION_PATH }} --source "Artifactory" --source "${{ vars.ARTIFACTORY_NUGET_URL }}"
 
     - name: Build solution
       run: dotnet build ${{ env.SOLUTION_PATH }} --configuration Release --no-restore
@@ -74,15 +74,15 @@ jobs:
     - name: Deploy to Azure App Service
       uses: azure/webapps-deploy@v3
       with:
-        app-name: ${{ variables.AZURE_WEBAPP_NAME }}
-        slot-name: ${{ variables.AZURE_WEBAPP_SLOT_NAME }}  # Optional: use 'production' if no slots
+        app-name: ${{ vars.AZURE_WEBAPP_NAME }}
+        slot-name: ${{ vars.AZURE_WEBAPP_SLOT_NAME }}  # Optional: use 'production' if no slots
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
         
     - name: Azure App Service Settings
       uses: azure/appservice-settings@v1
       with:
-        app-name: ${{ variables.AZURE_WEBAPP_NAME }}
-        slot-name: ${{ variables.AZURE_WEBAPP_SLOT_NAME }}  # Optional
+        app-name: ${{ vars.AZURE_WEBAPP_NAME }}
+        slot-name: ${{ vars.AZURE_WEBAPP_SLOT_NAME }}  # Optional
         app-settings-json: |
           [
             {
