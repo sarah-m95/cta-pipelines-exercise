@@ -1,0 +1,42 @@
+name: Backend Build
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths: 
+      - 'src/backend/**'
+
+env:
+  DOTNET_VERSION: '8.0.x'
+  SOLUTION_PATH: 'src/backend/Cta.Exercise.sln'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+        
+    - name: Configure NuGet with Artifactory
+      run: |
+        dotnet nuget add source ${{ secrets.ARTIFACTORY_NUGET_URL }} \
+          --name "Artifactory" \
+          --username ${{ secrets.ARTIFACTORY_USERNAME }} \
+          --password ${{ secrets.ARTIFACTORY_PASSWORD }} \
+          --store-password-in-clear-text
+        
+    - name: Restore NuGet packages
+      run: dotnet restore ${{ env.SOLUTION_PATH }} --source "Artifactory" --source "https://carmax.jfrog.io/artifactory/api/nuget/v3/nuget/index.json"
+      
+    - name: Build solution
+      run: dotnet build ${{ env.SOLUTION_PATH }} --configuration Release --no-restore
+      
+    - name: Test solution (if tests exist)
+      run: dotnet test ${{ env.SOLUTION_PATH }} --configuration Release --no-build --verbosity normal
+      continue-on-error: true
