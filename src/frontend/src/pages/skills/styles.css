@@ -1,0 +1,147 @@
+/* =============================================================================
+   SKILLS PAGE LAYOUT
+   ============================================================================= */
+
+.skills-container {
+  padding: 8px;
+  width: 100%;
+}
+
+.skills-header {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* =============================================================================
+   SKILLS FORM STYLES
+   ============================================================================= */
+
+.skills-form-container {
+  padding: 16px;
+  margin: auto;
+  margin-bottom: 16px;
+  width: 80%;
+}
+
+.skills-form {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.skills-form-name-input {
+  min-width: 200px;
+}
+
+.skills-form-level-select {
+  min-width: 150px;
+}
+
+.skills-form-description-input {
+  min-width: 250px;
+  flex-grow: 1;
+}
+
+.skills-form-submit-button {
+  white-space: nowrap;
+  font-weight: bold;
+}
+
+.skills-form-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* =============================================================================
+   SKILLS LIST STYLES
+   ============================================================================= */
+
+.skills-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin-top: 35px;
+}
+
+.skills-list-item {
+  list-style-type: none;
+}
+
+/* =============================================================================
+   SKILL CARD STYLES
+   ============================================================================= */
+
+.skill-card {
+  color-scheme: light;
+  font-family: "Fira Code", Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
+  box-sizing: border-box;
+  display: block;
+  width: 320px;
+  margin: 15px;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px 0 #DEDFE0, 0 6px 20px 0 #DEDFE0;
+}
+
+.skill-card.editing {
+  position: relative;
+}
+
+.skill-header-container {
+  display: flex;
+  align-items: center;
+}
+
+.skill-header-container > h1 {
+  flex-grow: 1;
+}
+
+.skill-header {
+  color: #005AB8;
+}
+
+.skill-subheader {
+  display: flex;
+  flex-direction: row;
+  font-weight: bold;
+}
+
+.skill-subheader p {
+  margin-bottom: 0;
+  margin-right: 5px;
+}
+
+.detail {
+  color: #005AB8;
+}
+
+.skill-edit-pencil:hover {
+  cursor: pointer;
+}
+
+/* =============================================================================
+   EDITING OVERLAY
+   ============================================================================= */
+
+.editing-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 15px;
+  background-color: rgba(0, 90, 184, 0.95);
+  border-radius: 12px;
+}
+
+.editing-overlay > p {
+  margin-top: 0;
+  font-weight: bold;
+  color: white;
+  font-size: 1.2rem;
+}
