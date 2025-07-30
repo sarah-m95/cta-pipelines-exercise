@@ -39,7 +39,7 @@ jobs:
       
     - name: Publish test results
       uses: dorny/test-reporter@v1
-      if: always()  # Run even if tests fail
+      if: always() && hashFiles('./test-results/*.trx') != ''  # Run only if test results exist
       with:
         name: .NET Tests
         path: './test-results/*.trx'
