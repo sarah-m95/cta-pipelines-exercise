@@ -33,9 +33,9 @@ jobs:
         
     - name: Configure npm authentication
       run: |
-        echo "//carmax.jfrog.io/artifactory/api/npm/npm/:username=${{ vars.ARTIFACTORY_USERNAME }}" >> ~/.npmrc
-        echo "//carmax.jfrog.io/artifactory/api/npm/npm/:_password=${{ secrets.ARTIFACTORY_PASSWORD }}" >> ~/.npmrc
-        echo "//carmax.jfrog.io/artifactory/api/npm/npm/:email=${{ vars.ARTIFACTORY_EMAIL }}" >> ~/.npmrc
+        # Create base64 encoded auth token from username:password
+        AUTH_TOKEN=$(echo -n "${{ vars.ARTIFACTORY_USERNAME }}:${{ secrets.ARTIFACTORY_PASSWORD }}" | base64)
+        echo "//carmax.jfrog.io/artifactory/api/npm/npm/:_auth=${AUTH_TOKEN}" >> ~/.npmrc
         echo "//carmax.jfrog.io/artifactory/api/npm/npm/:always-auth=true" >> ~/.npmrc
         
     - name: Install dependencies
