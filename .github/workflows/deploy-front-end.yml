@@ -33,13 +33,30 @@ jobs:
         
     - name: Configure npm authentication
       run: |
+        # Debug: Check if variables are set (without exposing values)
+        echo "Checking environment variables..."
+        echo "ARTIFACTORY_USERNAME is set: ${{ vars.ARTIFACTORY_USERNAME != '' }}"
+        echo "ARTIFACTORY_PASSWORD is set: ${{ secrets.ARTIFACTORY_PASSWORD != '' }}"
+        echo "Username length: ${#ARTIFACTORY_USERNAME}"
+        echo "Password length: ${#ARTIFACTORY_PASSWORD}"
+        
         # Add authentication to the existing .npmrc file in the frontend directory
         cd ${{ env.APP_LOCATION }}
-        echo "//carmax.jfrog.io/artifactory/api/npm/npm/:_password = ${{ secrets.ARTIFACTORY_PASSWORD }}" >> .npmrc
-        echo "//carmax.jfrog.io/artifactory/api/npm/npm/:username = ${{ vars.ARTIFACTORY_USERNAME }}" >> .npmrc
-        # Display the .npmrc content (passwords will be masked)
+        echo "//carmax.jfrog.io/artifactory/api/npm/npm/:username=${{ vars.ARTIFACTORY_USERNAME }}" >> .npmrc
+        echo "//carmax.jfrog.io/artifactory/api/npm/npm/:_password=${{ secrets.ARTIFACTORY_PASSWORD }}" >> .npmrc
+        
+        # Display the .npmrc content (passwords will be masked by GitHub)
         echo "Contents of .npmrc:"
         cat .npmrc
+        
+        # Test authentication with a simple request
+        echo "Testing authentication..."
+        curl -u "${{ vars.ARTIFACTORY_USERNAME }}:${{ secrets.ARTIFACTORY_PASSWORD }}" \
+          -s -o /dev/null -w "HTTP Status: %{http_code}" \
+          "https://carmax.jfrog.io/artifactory/api/npm/npm/" || echo "Curl test failed"
+      env:
+        ARTIFACTORY_USERNAME: ${{ vars.ARTIFACTORY_USERNAME }}
+        ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
         
     - name: Install dependencies
       run: npm ci
