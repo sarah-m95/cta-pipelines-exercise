@@ -35,8 +35,8 @@ jobs:
       run: |
         # Add authentication to the existing .npmrc file in the frontend directory
         cd ${{ env.APP_LOCATION }}
-        echo "//carmax.jfrog.io/artifactory/api/npm/npm/:_auth_auth = ${{ secrets.ARTIFACTORY_PASSWORD }}" >> .npmrc
-        echo "//carmax.jfrog.io/artifactory/api/npm/npm/:_authemail = 219214@carmax.com" >> .npmrc
+        echo "//carmax.jfrog.io/artifactory/api/npm/npm/:_password = ${{ secrets.ARTIFACTORY_PASSWORD }}" >> .npmrc
+        echo "//carmax.jfrog.io/artifactory/api/npm/npm/:username = ${{ vars.ARTIFACTORY_USERNAME }}" >> .npmrc
         # Display the .npmrc content (passwords will be masked)
         echo "Contents of .npmrc:"
         cat .npmrc
