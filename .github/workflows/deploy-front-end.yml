@@ -33,11 +33,14 @@ jobs:
         
     - name: Configure npm authentication
       run: |
-        # Configure npm to use Artifactory with username/password
-        npm config set registry https://carmax.jfrog.io/artifactory/api/npm/npm/
-        npm config set @kmx:registry https://carmax.jfrog.io/artifactory/api/npm/npm/
-        npm config set //carmax.jfrog.io/artifactory/api/npm/npm/:username ${{ vars.ARTIFACTORY_USERNAME }}
-        npm config set //carmax.jfrog.io/artifactory/api/npm/npm/:password ${{ secrets.ARTIFACTORY_PASSWORD }}
+        # Add authentication to the existing .npmrc file in the frontend directory
+        cd ${{ env.APP_LOCATION }}
+        echo "//carmax.jfrog.io/artifactory/api/npm/npm/:username=${{ vars.ARTIFACTORY_USERNAME }}" >> .npmrc
+        echo "//carmax.jfrog.io/artifactory/api/npm/npm/:_password=${{ secrets.ARTIFACTORY_PASSWORD }}" >> .npmrc
+        echo "//carmax.jfrog.io/artifactory/api/npm/npm/:always-auth=true" >> .npmrc
+        # Display the .npmrc content (passwords will be masked)
+        echo "Contents of .npmrc:"
+        cat .npmrc
         
     - name: Install dependencies
       run: npm ci
