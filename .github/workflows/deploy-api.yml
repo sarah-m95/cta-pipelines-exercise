@@ -27,16 +27,8 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
         
-    - name: Configure NuGet with Artifactory
-      run: |
-        dotnet nuget add source ${{ vars.ARTIFACTORY_NUGET_URL }} \
-          --name "Artifactory" \
-          --username ${{ vars.ARTIFACTORY_USERNAME }} \
-          --password ${{ secrets.ARTIFACTORY_PASSWORD }} \
-          --store-password-in-clear-text
-        
     - name: Restore NuGet packages
-      run: dotnet restore ${{ env.SOLUTION_PATH }} --source "Artifactory" --source "${{ vars.ARTIFACTORY_NUGET_URL }}"
+      run: dotnet restore ${{ env.SOLUTION_PATH }}
 
     - name: Build solution
       run: dotnet build ${{ env.SOLUTION_PATH }} --configuration Release --no-restore
