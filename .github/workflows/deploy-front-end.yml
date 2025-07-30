@@ -38,7 +38,6 @@ jobs:
         npm config set @kmx:registry https://carmax.jfrog.io/artifactory/api/npm/npm/
         npm config set //carmax.jfrog.io/artifactory/api/npm/npm/:username ${{ vars.ARTIFACTORY_USERNAME }}
         npm config set //carmax.jfrog.io/artifactory/api/npm/npm/:_password ${{ secrets.ARTIFACTORY_PASSWORD }}
-        npm config set //carmax.jfrog.io/artifactory/api/npm/npm/:always-auth true
         
     - name: Install dependencies
       run: npm ci
