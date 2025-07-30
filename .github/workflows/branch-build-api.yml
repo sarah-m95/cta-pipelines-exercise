@@ -1,10 +1,11 @@
-name: Backend Build
+name: API Branch Build
 
 on:
   pull_request:
     branches: [ main ]
     paths: 
       - 'src/backend/**'
+  workflow_dispatch:  # Allow manual triggering
 
 env:
   DOTNET_VERSION: '8.0.x'
@@ -25,14 +26,14 @@ jobs:
         
     - name: Configure NuGet with Artifactory
       run: |
-        dotnet nuget add source ${{ secrets.ARTIFACTORY_NUGET_URL }} \
+        dotnet nuget add source ${{ variables.ARTIFACTORY_NUGET_URL }} \
           --name "Artifactory" \
-          --username ${{ secrets.ARTIFACTORY_USERNAME }} \
+          --username ${{ variables.ARTIFACTORY_USERNAME }} \
           --password ${{ secrets.ARTIFACTORY_PASSWORD }} \
           --store-password-in-clear-text
         
     - name: Restore NuGet packages
-      run: dotnet restore ${{ env.SOLUTION_PATH }} --source "Artifactory" --source "https://carmax.jfrog.io/artifactory/api/nuget/v3/nuget/index.json"
+      run: dotnet restore ${{ env.SOLUTION_PATH }} --source "Artifactory" --source "${{ variables.ARTIFACTORY_NUGET_URL }}"
       
     - name: Build solution
       run: dotnet build ${{ env.SOLUTION_PATH }} --configuration Release --no-restore
