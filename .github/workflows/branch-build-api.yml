@@ -33,7 +33,7 @@ jobs:
           --store-password-in-clear-text
         
     - name: Restore NuGet packages
-      run: dotnet restore ${{ env.SOLUTION_PATH }} --source "Artifactory" --source "${{ vars.ARTIFACTORY_NUGET_URL }}"
+      run: dotnet restore ${{ env.SOLUTION_PATH }} --source "Artifactory"
       
     - name: Build solution
       run: dotnet build ${{ env.SOLUTION_PATH }} --configuration Release --no-restore
