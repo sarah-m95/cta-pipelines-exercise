@@ -33,8 +33,8 @@ jobs:
         
     - name: Configure npm authentication
       run: |
-        echo "//carmax.jfrog.io/artifactory/api/npm/npm/:_auth=${{ secrets.NPM_AUTH_TOKEN }}" >> ~/.npmrc
         echo "//carmax.jfrog.io/artifactory/api/npm/npm/:username=${{ vars.ARTIFACTORY_USERNAME }}" >> ~/.npmrc
+        echo "//carmax.jfrog.io/artifactory/api/npm/npm/:_password=${{ secrets.ARTIFACTORY_PASSWORD }}" >> ~/.npmrc
         echo "//carmax.jfrog.io/artifactory/api/npm/npm/:email=${{ vars.ARTIFACTORY_EMAIL }}" >> ~/.npmrc
         echo "//carmax.jfrog.io/artifactory/api/npm/npm/:always-auth=true" >> ~/.npmrc
         
