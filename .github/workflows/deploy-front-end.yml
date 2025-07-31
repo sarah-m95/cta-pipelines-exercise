@@ -11,6 +11,8 @@ env:
   NODE_VERSION: '20.x'
   APP_LOCATION: 'src/frontend'  # Root location of app source code
   OUTPUT_LOCATION: 'dist'       # Location of build output relative to app location
+  ARTIFACTORY_USERNAME: ''      # Set this as your employee id
+
 
 jobs:
   build-and-deploy:
@@ -33,31 +35,14 @@ jobs:
         
     - name: Configure npm authentication
       run: |
-        # Debug: Check if variables are set (without exposing values)
-        echo "Checking environment variables..."
-        echo "ARTIFACTORY_USERNAME is set: ${{ vars.ARTIFACTORY_USERNAME != '' }}"
-        echo "ARTIFACTORY_PASSWORD is set: ${{ secrets.ARTIFACTORY_PASSWORD != '' }}"
-        echo "Username length: ${#ARTIFACTORY_USERNAME}"
-        echo "Password length: ${#ARTIFACTORY_PASSWORD}"
-        
         # Add authentication to the existing .npmrc file in the frontend directory
         cd ${{ env.APP_LOCATION }}
         
-        # Create base64 encoded auth token (this is what npm often expects)
-        AUTH_TOKEN=$(echo -n "${{ vars.ARTIFACTORY_USERNAME }}:${{ secrets.ARTIFACTORY_PASSWORD }}" | base64 -w 0)
+        # Create base64 encoded auth token for JFrog Artifactory
+        AUTH_TOKEN=$(echo -n "${{ env.ARTIFACTORY_USERNAME }}:${{ secrets.ARTIFACTORY_PASSWORD }}" | base64 -w 0)
         echo "//carmax.jfrog.io/artifactory/api/npm/npm/:_auth=${AUTH_TOKEN}" >> .npmrc
-        
-        # Display the .npmrc content (auth tokens will be masked by GitHub)
-        echo "Contents of .npmrc:"
-        cat .npmrc
-        
-        # Test authentication with a simple request
-        echo "Testing authentication..."
-        curl -u "${{ vars.ARTIFACTORY_USERNAME }}:${{ secrets.ARTIFACTORY_PASSWORD }}" \
-          -s -o /dev/null -w "HTTP Status: %{http_code}" \
-          "https://carmax.jfrog.io/artifactory/api/npm/npm/" || echo "Curl test failed"
       env:
-        ARTIFACTORY_USERNAME: ${{ vars.ARTIFACTORY_USERNAME }}
+        ARTIFACTORY_USERNAME: ${{ env.ARTIFACTORY_USERNAME }}
         ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
         
     - name: Install dependencies

@@ -12,6 +12,8 @@ env:
   SOLUTION_PATH: 'src/backend/Cta.Exercise.sln'
   PROJECT_PATH: 'src/backend/Cta.Exercise.Service/Cta.Exercise.Service.csproj'
   AZURE_WEBAPP_PACKAGE_PATH: './publish'
+  AZURE_WEBAPP_NAME: ''
+  AZURE_WEBAPP_SLOT_NAME: 'production'
 
 jobs:
   build-and-deploy:
@@ -66,15 +68,15 @@ jobs:
     - name: Deploy to Azure App Service
       uses: azure/webapps-deploy@v3
       with:
-        app-name: ${{ vars.AZURE_WEBAPP_NAME }}
-        slot-name: ${{ vars.AZURE_WEBAPP_SLOT_NAME }}  # Optional: use 'production' if no slots
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}  # Optional: use 'production' if no slots
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
         
     - name: Azure App Service Settings
       uses: azure/appservice-settings@v1
       with:
-        app-name: ${{ vars.AZURE_WEBAPP_NAME }}
-        slot-name: ${{ vars.AZURE_WEBAPP_SLOT_NAME }}  # Optional
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}  # Optional
         app-settings-json: |
           [
             {
