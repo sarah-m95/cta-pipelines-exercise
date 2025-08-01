@@ -78,6 +78,17 @@ This build only focuses on the backend code. It tells the `runner` (aka the comp
 3. Log in to the [Azure Portal][https://portal.azure.com] using your numbered account. To find your app service quickly, search "wapp" in the search bar at the top of the screen. Navigate to the resource when it appears. Alternatively, you can search for the subscription you set up with Joe and find the App Service resource there. Remember to look for the App Service, no the App Service Plan. An app service plan just describes to Azure what kind and how many servers to dedicate to the app service, whereas the app service is the actual representation of those servers (more or less). Copy the name of the resource and paste it as the value for `AZURE_WEBAPP_NAME` on line 18 of our workflow.
 ![Get app service name](./images/get-appservice-name.png)
 
+4. Let's go back to our YAML file. Now, we're no longer missing any environment variables, but if we read the code, we'll notice references to `secrets.AZURE_CREDENTIALS`. Where's that getting defined? GitHub actions have the concept of `secrets`, which are secure variables we don't want exposed to the internet. These include any authentication credentials, and in this case what we need are credentials that allow GitHub to talk to Azure. They're basically your passkey for letting GitHub upload your code to the app service. We'll need to generate those! To start, let's open the Powershell terminal:
+![Open the PS terminal](./images/get-spo-1.png)
+
+Run `az login` from the command line. This should prompt you to log in to Azure using your numbered account.
+![Run az login](./images/get-spo-2.png)
+
+Once you're logged in, run the following command in the terminal: `az ad sp create-for-rbac --name "github-actions-sp" --role contributor --scopes /subscriptions/{subscription-id}`
+
+For subscription 
+
+
 ### Part 3: Setting up your frontend deployment
 
 ## Project Structure

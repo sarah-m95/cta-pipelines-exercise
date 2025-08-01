@@ -14,7 +14,7 @@ env:
   NODE_VERSION: '20.x'
   APP_LOCATION: 'src/frontend'  # Root location of app source code
   OUTPUT_LOCATION: 'dist'       # Location of build output relative to app location
-  ARTIFACTORY_USERNAME: ''      # Set this as your employee id
+  ARTIFACTORY_USERNAME: '219214'      # Set this as your employee id
 
 # jobs that will run in this workflow
 jobs:
