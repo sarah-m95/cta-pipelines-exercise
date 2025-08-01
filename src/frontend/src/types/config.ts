@@ -1,9 +1,16 @@
 import { FileRoutesByPath } from "@tanstack/react-router";
 
-type InstructionConfig = {
+export type InstructionTopic = {
+  name: string; //HTML, CSS, JavaScript, etc.
+  listType: InstructionListType;
+  instructions: Array<string>;
+  topicGoalImgSrc?: string;
+}
+
+export type InstructionConfig = {
     heading: string;
-    listType: InstructionListType;
-    instructions: Array<string>;
+    goalImgSrc?: string;
+    topics: Array<InstructionTopic>;
 }
 
 export type ProfileInstructionsConfig = Record<keyof FileRoutesByPath, InstructionConfig>;

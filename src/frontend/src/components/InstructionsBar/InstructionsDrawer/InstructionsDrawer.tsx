@@ -5,7 +5,7 @@ import {useLocation} from '@tanstack/react-router';
 import {KmxArrowLeftFilled, KmxQuestionCircleStroked} from "@kmx/mui-icons";
 import INSTRUCTIONS_CONFIG from "../../../config/instructions.ts";
 import {InstructionListType, ProfileRoutes} from "../../../types/config.ts";
-
+import FinishedExampleModal from "../FinishedExampleModal/FinishedExampleModal.tsx";
 export default function InstructionsDrawer() {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const pathname = useLocation({
@@ -13,7 +13,7 @@ export default function InstructionsDrawer() {
     });
 
     const instructionsConfig = INSTRUCTIONS_CONFIG[pathname as ProfileRoutes]
-    if (!instructionsConfig)  {  
+    if (!instructionsConfig)  {
         return null; // No instructions available for this route
     }
     return (
@@ -53,21 +53,33 @@ export default function InstructionsDrawer() {
                     <Typography component='h2' variant='h5' color='secondary' data-testid='instructions-heading'>
                         {instructionsConfig.heading}
                     </Typography>
+                  { instructionsConfig.topics?.map((topic, index) => (
+                        <Box key={`${topic.name}-topic-${index}`}>
+                            <Typography component='h3' variant='h6' color='secondary' data-testid='instructions-topic-heading'>
+                                {topic.name}
+                            </Typography>
+                            <Typography component='p' variant='body2' color='secondary' data-testid='instructions-topic-body'>
+                              {topic.listType === InstructionListType.Bulleted ? (
+                                <ul>
+                                  {topic.instructions?.map((instruction, index) => (
+                                    <li key={`${instructionsConfig.heading}-instruction-${index}`}>{instruction}</li>
+                                  ))}
+                                </ul>
+                              ) : (
+                                <ol>
+                                  {topic.instructions?.map((instruction, index) => (
+                                    <li key={`${instructionsConfig.heading}-instruction-${index}`}>{instruction}</li>
+                                  ))}
+                                </ol>
+                              )}
+                            </Typography>
+                        </Box>
+                    )
+                  )}
                     <Typography component='p' variant='body2' color='secondary' data-testid='instructions-body'>
-                        {instructionsConfig.listType === InstructionListType.Bulleted ? (
-                            <ul>
-                                {instructionsConfig.instructions?.map((instruction, index) => (
-                                    <li key={`${instructionsConfig.heading}-instruction-${index}`}>{instruction}</li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <ol>
-                                {instructionsConfig.instructions?.map((instruction, index) => (
-                                    <li key={`${instructionsConfig.heading}-instruction-${index}`}>{instruction}</li>
-                                ))}
-                            </ol>
-                        )}
+
                     </Typography>
+                    {instructionsConfig.goalImgSrc && <FinishedExampleModal imgSrc={instructionsConfig.goalImgSrc} /> }
                     <Button
                         color='cta'
                         data-testid='payment-breakdown-close-button'

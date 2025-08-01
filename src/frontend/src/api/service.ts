@@ -1,7 +1,7 @@
 import { Hobby } from '../types/hobby';
 import { Skill } from '../types/skill';
 
-const apiUrl = 'https://localhost:7231';
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const api = {
   // Get all hobbies
