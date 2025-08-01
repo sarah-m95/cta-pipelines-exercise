@@ -1,5 +1,7 @@
+# name for this workflow
 name: Deploy Frontend to Azure Static Web App
 
+# trigger(s) for this workflow - how should it be initiated?
 on:
   push:
     branches: [ main ]
@@ -7,18 +9,22 @@ on:
       - 'src/frontend/**'
   workflow_dispatch:  # Allow manual triggering
 
+# environment variables used in this workflow
 env:
   NODE_VERSION: '20.x'
   APP_LOCATION: 'src/frontend'  # Root location of app source code
   OUTPUT_LOCATION: 'dist'       # Location of build output relative to app location
   ARTIFACTORY_USERNAME: ''      # Set this as your employee id
 
-
+# jobs that will run in this workflow
 jobs:
+  # job name
   build-and-deploy:
+    # runs on the latest Ubuntu (Linux) environment
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
+    name: Build and Deploy
     
+    # steps that will be executed for the job
     steps:
     - name: Checkout code
       uses: actions/checkout@v4

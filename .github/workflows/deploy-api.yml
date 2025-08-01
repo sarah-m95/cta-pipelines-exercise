@@ -1,5 +1,7 @@
+# name for this workflow
 name: Deploy API to Azure App Service
 
+# trigger(s) for this workflow - how should it be initiated?
 on:
   push:
     branches: [ main ]
@@ -7,6 +9,7 @@ on:
       - 'src/backend/**'
   workflow_dispatch:  # Allow manual triggering
 
+# environment variables used in this workflow
 env:
   DOTNET_VERSION: '8.0.x'
   SOLUTION_PATH: 'src/backend/Cta.Exercise.sln'
@@ -15,11 +18,16 @@ env:
   AZURE_WEBAPP_NAME: ''
   AZURE_WEBAPP_SLOT_NAME: 'production'
 
+# jobs that will run in this workflow
 jobs:
+  # job id
   build-and-deploy:
+    # runs on the latest Ubuntu (Linux) environment
     runs-on: ubuntu-latest
     environment: production  # Use GitHub environment for additional protection
-    
+    name: Build and Deploy
+
+    # steps that will be executed for the job
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -41,12 +49,14 @@ jobs:
       
     - name: Publish test results
       uses: dorny/test-reporter@v1
-      if: always() && hashFiles('./test-results/*.trx') != ''  # Run only if test results exist
+      # Run only if test results exist
+      if: always() && hashFiles('./test-results/*.trx') != ''
       with:
         name: .NET Tests
         path: './test-results/*.trx'
         reporter: dotnet-trx
-        
+    
+    # Bundle the application for deployment
     - name: Publish application
       run: |
         dotnet publish ${{ env.PROJECT_PATH }} \
@@ -63,6 +73,8 @@ jobs:
     - name: Login to Azure
       uses: azure/login@v2
       with:
+        # REQUIRED: Set this in GitHub repository secrets
+        # This should be a JSON string with Azure credentials
         creds: ${{ secrets.AZURE_CREDENTIALS }}
         
     - name: Deploy to Azure App Service
