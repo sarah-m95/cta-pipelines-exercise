@@ -92,6 +92,12 @@ const Skills: React.FC = () => {
       {/* Page title */}
       <h1 className="skills-header">{pageMode} Skills Page</h1>
 
+      {/* Display HTML-only version in iframe */}
+      {/* <iframe
+        style={{ border: 'none', width: '100%', height: '500px' }}
+        src="/src/pages/skills/skills-html-only.html"
+      /> */}
+
       {/* Form for adding/editing skills */}
       <SkillsForm
         handleCreateSkill={handleCreateSkill}

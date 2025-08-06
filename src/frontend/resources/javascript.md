@@ -557,7 +557,7 @@ updatedAddress.street2 = 'Apt 123'; // customer updates street2
 Callback Nightmares.  Previously you would have nested callbacks.  One API call would run after the previous and on and on.  This was very difficult to troubleshoot issues especially if the callbacks were spread across different modules.
 
 ```JS
-// Callback hell example
+// Callback nightmare example
 setTimeout(function() {
   console.log('Step 1');
   setTimeout(function() {

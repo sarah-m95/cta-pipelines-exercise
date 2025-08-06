@@ -4,15 +4,28 @@
 
 ### Welcome
 
+#### Goal of this class
+
+* Introduce you to the basics of web development at CarMax (particularly HTML, CSS, JS, and React)
+
 #### Introductions
 
 * Name
-* Background in Engineering
+* Experience in Web Development?  (HTML, CSS, JS, React, other)
 * What are you excited about doing next with engineering?
 
 #### The Project
 
 * Quick walkthrough of the finished website
+
+#### Walkthrough of rest of syllabus
+
+#### Expectations
+
+* We are going to cover a lot of topics in a short period of time.  Some of you will come with more experience in this area that others.
+* If we move onto the next topic and you aren't ready yet, no worries.  You can always go back once we reach the next exercise.
+* Furthermore, if you need additional guidance or some code samples to get you caught up we are happy to assist.
+* All we expect of you is to have an open mind and be willing to learn.  
 
 ### HTML Lesson
 
@@ -40,11 +53,11 @@
 
 ---
 
-## Day 2
+## Day 2 (9:30am start)
 
-### Recap of day 1
+### Recap of day 1 (5 mins)
 
-### JavaScript Lesson (briefly continued)
+### JavaScript Lesson (briefly continued) (10 mins)
 
 ### React Lesson
 
@@ -60,6 +73,8 @@
 
 ### Break (10 mins)
 
-### End of Class Wrap Up (4:00pm - 4:30pm)
+### End of Class Wrap Up (3:45pm - 4:30pm)
 
-* what questions do you have?
+* Demos!
+  
+

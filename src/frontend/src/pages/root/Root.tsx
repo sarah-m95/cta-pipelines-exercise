@@ -13,21 +13,20 @@ import { showInstructions } from "../../utilities/envUtils.ts";
 
 function RootPage() {
     return (
-        <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <AppWrapper>
-                {showInstructions && <InstructionsBar />}
-                <ProjectWrapper>
-                    <NavBar />
-                    <MainWrapper>
-                        <Outlet />
-                    </MainWrapper>
-                    <Footer />
-                </ProjectWrapper>
-                <TanStackRouterDevtools position="bottom-right" />
-            </AppWrapper>
-        </ThemeProvider>
-    )
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <AppWrapper>
+          {showInstructions && <InstructionsBar />}
+          <ProjectWrapper>
+            <NavBar />
+            <MainWrapper>
+              <Outlet />
+            </MainWrapper>
+            <Footer />
+          </ProjectWrapper>
+        </AppWrapper>
+      </ThemeProvider>
+    );
 }
 
 export default RootPage;

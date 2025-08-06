@@ -12,7 +12,7 @@ export default function FinishedExampleModal({imgSrc}: Props) {
   const handlePreview = () => setOpen(true);
 
   return (
-    <>
+    <Box sx={{ mt: 2 }}>
       <Typography component='h3' variant='h6' color='secondary' data-testid='instructions-heading'>
         End Goal:
       </Typography>
@@ -36,7 +36,7 @@ export default function FinishedExampleModal({imgSrc}: Props) {
           />
         </Fade>
       </Backdrop>
-      <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+      <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 4 }}>
         <img
           className="img-thumbnail"
           onClick={handlePreview}
@@ -45,6 +45,6 @@ export default function FinishedExampleModal({imgSrc}: Props) {
           style={{maxHeight: "90%", maxWidth: "90%", outline: "none"}}
         />
       </Box>
-    </>
+    </Box>
   );
 }

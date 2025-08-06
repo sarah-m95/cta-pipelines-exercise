@@ -14,7 +14,6 @@ env:
   NODE_VERSION: '20.x'
   APP_LOCATION: 'src/frontend'  # Root location of app source code
   OUTPUT_LOCATION: 'dist'       # Location of build output relative to app location
-  ARTIFACTORY_USERNAME: '219214'      # Set this as your employee id
 
 # jobs that will run in this workflow
 jobs:
@@ -45,10 +44,10 @@ jobs:
         cd ${{ env.APP_LOCATION }}
         
         # Create base64 encoded auth token for JFrog Artifactory
-        AUTH_TOKEN=$(echo -n "${{ env.ARTIFACTORY_USERNAME }}:${{ secrets.ARTIFACTORY_PASSWORD }}" | base64 -w 0)
+        AUTH_TOKEN=$(echo -n "${{ secrets.ARTIFACTORY_USERNAME }}:${{ secrets.ARTIFACTORY_PASSWORD }}" | base64 -w 0)
         echo "//carmax.jfrog.io/artifactory/api/npm/npm/:_auth=${AUTH_TOKEN}" >> .npmrc
       env:
-        ARTIFACTORY_USERNAME: ${{ env.ARTIFACTORY_USERNAME }}
+        ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
         ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
         
     - name: Install dependencies
@@ -67,7 +66,7 @@ jobs:
       uses: Azure/static-web-apps-deploy@v1
       with:
         # REQUIRED: Set this in GitHub repository secrets
-        azure_static_web_apps_api_token: ${{ secrets.SWA_TOKEN_2 }}
+        azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
         
         # Repository configuration
         repo_token: ${{ secrets.GITHUB_TOKEN }}  # Used for GitHub integrations (auto-generated)
