@@ -66,7 +66,7 @@ If you're not sure if you've set your project up correctly, please reference thi
 
 1. Let's start - Create a folder in your root folder called `.github` and in that `.github` folder, create another folder called `workflows`. This is where our pipelines are going to live as code. While a pipeline is a series of steps taken to deploy an application, we can use code to define those steps so that they are the same every time, we can exercise version control over changes to those steps, and we can restore the steps in case the builds ever got deleted.
 
-2. Open your project in VS Code. We'll be editing all our code here. in the `.github/workflows` folder you just created, make a new file. Call it `branch-build-api.yml`. The package suffix indicates that this file is in the YAML programming language. You don't need to know a ton about YAML, just know that it's a way to define a data object & properties. Essentially what it's doing is defining the structure and properties of your build pipeline. This is fed to GitHub, and GitHub interprets it into a GitHub Actions workflow.
+2. Open your project in VS Code. We'll be editing all our code here. In the `.github/workflows` folder you just created, make a new file. Call it `branch-build-api.yml`. The file suffix indicates that this file is in the YAML programming language. You don't need to know a ton about YAML, just know that it's a way to define a data object & properties. Essentially what it's doing is defining the structure and properties of your build pipeline. This is fed to GitHub, and GitHub interprets it into a GitHub Actions workflow.
 
 3. For this first pipeline, I'm going to have you guys copy some code from this repo rather than write it from scratch. Go to [.github\workflows\branch-build-api.yml](.github\workflows\branch-build-api.yml) and copy that into your own file. We're going to walk through what this file is doing in person, but if you're looking at this on your own, please read the yaml file and the comments about what each section is doing. It's all fairly straightforward, but it can be confusing if you've never seen YAML or if you're new to build pipelines.
 
@@ -81,7 +81,7 @@ This build only focuses on the backend code. It tells the `runner` (aka the comp
 
 2. Copy the code in this repo from [.github\workflows\deploy-api.yml](.github\workflows\deploy-api.yml) into your new file. Let's read through the code together to understand the kind of pipeline it's defining. You'll notice that we have a couple of parameters we need to fill in. First, on line 18, there's an environment parameter called `AZURE_WEBAPP_NAME`. This is the name of the app service we deployed to Azure. Let's go grab that...
 
-3. Log in to the [Azure Portal][https://portal.azure.com] using your numbered account. To find your app service quickly, search "wapp" in the search bar at the top of the screen. Navigate to the resource when it appears. Alternatively, you can search for the subscription you set up with Joe and find the App Service resource there. Remember to look for the App Service, no the App Service Plan. An app service plan just describes to Azure what kind and how many servers to dedicate to the app service, whereas the app service is the actual representation of those servers (more or less). Copy the name of the resource and paste it as the value for `AZURE_WEBAPP_NAME` on line 18 of our workflow.
+3. Log in to the [Azure Portal](https://portal.azure.com) using your numbered account. To find your app service quickly, search "wapp" in the search bar at the top of the screen. Navigate to the resource when it appears. Alternatively, you can search for the subscription you set up with Joe and find the App Service resource there. Remember to look for the App Service, not the App Service Plan. An app service plan just describes to Azure what kind and how many servers to dedicate to the app service, whereas the app service is the actual representation of those servers (more or less). Copy the name of the resource and paste it as the value for `AZURE_WEBAPP_NAME` on line 18 of our workflow.
 ![Get app service name](./images/get-appservice-name.png)
 
 4. Let's go back to our YAML file. Now, we're no longer missing any environment variables, but if we read the code, we'll notice references to `secrets.AZURE_CREDENTIALS`. Where's that getting defined? GitHub actions have the concept of `secrets`, which are secure variables we don't want exposed to the internet. These include any authentication credentials, and in this case what we need are credentials that allow GitHub to talk to Azure. They're basically your passkey for letting GitHub upload your code to the app service. We'll need to generate those! To start, let's open the Powershell terminal:
@@ -92,12 +92,12 @@ Run `az login` from the command line. This should prompt you to log in to Azure 
 
 Once you're logged in, run the following command in the terminal: `az ad sp create-for-rbac --name "github-actions-sp" --role contributor --scopes /subscriptions/{subscription-id}`
 
-For subscription id, you'll need to get that from the Azure Portal. If you log into [https://portal.azure.com] you'll see your resources (or just navigate back to the tab we were working in earlier to grab the app service name). If you're looking at your app service or any other resource you provisioned in your subscription, you'll see a property in the "Overview" tab called "Subscription ID." It is a GUID. That's the value you need! Insert it into the command I just shared where `{subscriptionId}` is and run it!
+For subscription id, you'll need to get that from the Azure Portal. If you log into [https://portal.azure.com](https://portal.azure.com) you'll see your resources (or just navigate back to the tab we were working in earlier to grab the app service name). If you're looking at your app service or any other resource you provisioned in your subscription, you'll see a property in the "Overview" tab called "Subscription ID." It is a GUID. That's the value you need! Insert it into the command I just shared where `{subscription-id}` is and run it!
 
-5. Now, we're going to store that newly created Service Principal somewhere our pipeline can access it, but it won't be exposed to random people on GitHub. Copy the output from the command (assuming it ran successfully). Don't close the terminal in case you lose the value before saving it. Go to your repository in Github. Navigate to the "Settings" tab.
+5. Now, we're going to store that newly created Service Principal somewhere our pipeline can access it, but it won't be exposed to random people on GitHub. Copy the output from the command (assuming it ran successfully). Don't close the terminal in case you lose the value before saving it. Go to your repository in GitHub. Navigate to the "Settings" tab.
 ![Go to settings](./images/save-secret-1.png)
 
-In the lefthand menu, go to the "Secrets and variables' dropdown, and select "Actions."
+In the left-hand menu, go to the "Secrets and variables" dropdown, and select "Actions."
 ![Go to Actions under Secrets and variables](./images/save-secret-2.png)
 
 Now click "New repository secret."
@@ -138,29 +138,29 @@ Then, select "Generate an Identity Token."
 
 You can name it anything, I named mine "CTA Pipelines Project." Just make sure it's identifiable to you later. The long string of numbers and characters it generates is your identity token and the value for your next secret. Copy it, and go back to GitHub.
 
-Add a secret with the name `ARTIFACTORY_PASSWORD` and the value is the string you just copied from Jfrog. Save it.
+Add a secret with the name `ARTIFACTORY_PASSWORD` and the value is the string you just copied from JFrog. Save it.
 
 Finally, we need a secret called `AZURE_STATIC_WEB_APPS_API_TOKEN`. Deploying to a SWA app requires a different set of credentials from the Azure SPO we used to deploy the API. Let's go to [Azure](https://portal.azure.com). Log in and find your Static Web App resource. There should be a button called "Manage deployment token." Click it.
 ![click manage deployment token](./images/swa-deployment-token.png)
 
 Copy the deployment token Azure provides to you. Let's go back to GitHub and add our final secret. The name should be `AZURE_STATIC_WEB_APPS_API_TOKEN` and its value should be the string you just copied. Save it. Leave this webpage up, as we'll need to refer back to it in just a few minutes.
 
-3. Head back to your pipeline file in VS Code. Commit any uncommitted changes, and Head back to the GitHub Actions tab. You should see a workflow called "Deploy Frontend to Azure Static Web App." Go ahead and run that workflow, and it should succeed.
+3. Head back to your pipeline file in VS Code. Commit any uncommitted changes, and head back to the GitHub Actions tab. You should see a workflow called "Deploy Frontend to Azure Static Web App." Go ahead and run that workflow, and it should succeed.
 
 4. OK, so your pipeline ran successfully, but where's the code? Go back to Azure and you should see `URL` as one of the properties on your Azure Static Web App. It will look super weird, probably like a jumble of random words and characters - that's because it's autogenerated to be unique by Azure. If you click that link, it should take you to your Resume site! And on first glance, it looks great. We can see the front-end components loading. However, if you navigate to the Hobbies or Skills pages, you'll notice that nothing gets loaded, and if we try to add a new hobby or skill, nothing gets added.
 
 If you open the developer tools, you'll notice that the requests are failing and it's saying something about our CORS policy. There's a lot to cover related to CORS, but essentially, CORS (Cross-Origin Resource Sharing) is a security feature built into web browsers that blocks web pages from making requests to a different domain, port, or protocol than the one serving the web page. It's essentially saying your front end site and api have different URLs, so they're not allowed to talk to each other by default. We're going to have to whitelist our front end on the API side.
 
-5. Alright, one last code push - let's open our project in VS Code or Visual studio, whichever you're more comfortable in. The change is going to be super simple. You will need the URL of your front end and we're going to explicitly whitelist it with our api. Go to `src/backend/Cta.Exercise.Service/Program.cs`. We're going to look for the section under the comment `// Add CORS policy`.
+5. Alright, one last code push - let's open our project in VS Code or Visual Studio, whichever you're more comfortable in. The change is going to be super simple. You will need the URL of your front end and we're going to explicitly whitelist it with our API. Go to `src/backend/Cta.Exercise.Service/Program.cs`. We're going to look for the section under the comment `// Add CORS policy`.
 
-You're going to edit line 31 so that it reads `policy.WithOrigins("http://localhost:5173", "https://{myURL}.azurestaticapps.net")`. Please note that there is no trailing forward slash included in the url, if you have one, your change won't work!
+You're going to edit line 31 so that it reads `policy.WithOrigins("http://localhost:5173", "https://{myURL}.azurestaticapps.net")`. Please note that there is no trailing forward slash included in the URL, if you have one, your change won't work!
 
 Here's a visual example of what the change should look like:
 ![cors policy](./images/cors-policy.png)
 
 Push your latest changes to GitHub.
 
-6. If you've pushed your changes to the remote, your API deployment should automatically kick off. Check for it in the GitHub Actions tab. Once that build completes, you should be able to re-load the front end portion of your site, and tada! Your frontend now has access to your backend, and it can display your hobbies and skills correctly!
+6. If you've pushed your changes to the remote, your API deployment should automatically kick off. Check for it in the GitHub Actions tab. Once that build completes, you should be able to reload the front end portion of your site, and tada! Your frontend now has access to your backend, and it can display your hobbies and skills correctly!
 
 Congrats! You've completed the activity! You now have working pipelines for your personal site! You can make whatever changes you like, commit them here in this repo, and the changes will carry over into the site you've deployed to Azure.
 
@@ -184,7 +184,7 @@ If you want to keep developing your app further, try adding some security featur
 
 Ideally, we shouldn't be enabling cross-site requests in our API with the CORS exception we added. Figure out a way around that and your requests to your API will be more secure. Hint: Azure static web apps can be deployed with an api component to represent a unified Azure Static Web App.
 
-You can also work in Azure with the Static Web App to create a custom domain for your site, so that the url isn't some crazy combination of words and characters.
+You can also work in Azure with the Static Web App to create a custom domain for your site, so that the URL isn't some crazy combination of words and characters.
 
 ## Further Reading
 
