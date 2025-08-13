@@ -61,19 +61,19 @@ DTOs (data transfer objects) are the versions of a model that a client will inte
 - This part of the code for hobbies is already completed. You should debug the code to see how it runs.
 
 ### Step 1: Set breakpoint on line 21 of Cta.Exercise.Service/Controllers/HobbyController.cs and make sure Solution Configuration is set to Debug.
-| ![Step 1](./images/DebugSetup.png) |
+| ![Step 1](../images/DebugSetup.png) |
 | -- |
 
 ### Step 2: Make sure Cta.Exercise.Service is set as the startup project and update it if it's not. Then, you can click on the filled in green triangle to run the project.
-| ![Step 2](./images/StartupProject.png) |
+| ![Step 2](../images/StartupProject.png) |
 | -- |
 
 :warning: If you get a certificate warning in your browser during the next step, this is normal for local development and you should be able to continue by clicking past the warning or having visual studio create a certificate for you.
 
 ### Step 3: The swagger request page should automatically open in another window. Click execute for GET /Hobby to get a list of all hobbies loaded into the system (some have been pre-loaded into the repository). This should locally call the endpoint in your controller and you can step through each class that is run. Return to Visual Studio for debugging. Click on 'Step Into' in the top left corner of the screen to continue to the next step. Make sure to look through the value of variables as you debug.
-![Step 3a](./images/DebugRun.png)
-![Step 3b](./images/Swagger.png)
-![Step 3c](./images/DebugExample.png)
+![Step 3a](../images/DebugRun.png)
+![Step 3b](../images/Swagger.png)
+![Step 3c](../images/DebugExample.png)
 
 ### Step 4: Continue debugging and try experimenting with deleting a hobby and see how the data is manipulated
 
